@@ -2,7 +2,7 @@ public enum Result<OK,Err:Error> { //railway programming type, inspired by the r
   case success(OK)
   case error(Err)
 
-  func flatMap<New>(f:(OK) -> Result<New, Err>) -> Result<New,Err> {
+  public func flatMap<New>(f:(OK) -> Result<New, Err>) -> Result<New,Err> {
     switch self {
       case .error(let a): return Result<New,Err>.error(a)
       case .success(let original):
@@ -12,17 +12,17 @@ public enum Result<OK,Err:Error> { //railway programming type, inspired by the r
         }
     }
   }
-  func map<New>( f:@escaping (OK) -> New) -> Result<New,Err> {
+  public func map<New>( f:@escaping (OK) -> New) -> Result<New,Err> {
     let f1 : (OK) -> Result<New,Err> = {.success(f($0))}
     return self.flatMap(f:f1)
   }
-  func onValue(e:(Err) -> (), s:(OK) -> ()) {
+  public func onValue(e:(Err) -> (), s:(OK) -> ()) {
     switch self {
       case .success(let a): s(a)
       case .error(let a)  : e(a)
     }
   }
-  static func fromFunction<In, Out, Err>(nonFailing f:@escaping (In) -> Out) -> (In) -> Result<Out,Err> {
+  public static func fromFunction<In, Out, Err>(nonFailing f:@escaping (In) -> Out) -> (In) -> Result<Out,Err> {
     return {.success(f($0))}
   }
 }
