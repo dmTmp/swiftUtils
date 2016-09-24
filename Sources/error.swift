@@ -1,4 +1,4 @@
-enum Result<OK,Err:Error> { //railway programming type, inspired by the rust equivalent
+public enum Result<OK,Err:Error> { //railway programming type, inspired by the rust equivalent
   case success(OK)
   case error(Err)
 
